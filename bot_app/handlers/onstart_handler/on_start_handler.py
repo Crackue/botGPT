@@ -14,7 +14,7 @@ def command_start(update: Update, context: CallbackContext) -> None:
     scope = BotCommandScopeChat(chat_id)
     list_commands = context.bot.get_my_commands(scope=scope)
     if len(list_commands):
-        ask = BotCommand("ask", "ask")
+        ask = BotCommand("ask", "ask me")
         commands_chat = [ask]
         context.bot.set_my_commands(commands_chat, timeout=None, api_kwargs=None, scope=scope)
 

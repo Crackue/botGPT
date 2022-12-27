@@ -2,6 +2,7 @@ import json
 import os
 import logging
 
+import openai
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -10,12 +11,14 @@ from bot_app.handlers.handlers import ask_handler as ask_handler
 from botGPT.settings import env
 from telegram import Bot, Update
 from telegram.ext import (Updater, CommandHandler, Dispatcher)
+from botGPT.settings import DEBUG, BOT_TOKEN, WEB_HOOK_URL
 
 logger = logging.getLogger(__name__)
 DEBUG = env('DEBUG')
-BOT_TOKEN = os.getenv('BOT_TOKEN')
-TELEGRAM_URL = os.getenv('TELEGRAM_URL')
-WEB_HOOK_URL = os.getenv('WEB_HOOK_URL')
+BOT_TOKEN = env('BOT_TOKEN')
+TELEGRAM_URL = env('TELEGRAM_URL')
+WEB_HOOK_URL = env('WEB_HOOK_URL')
+OPENAI_API_KEY = env('OPENAI_API_KEY')
 
 n_workers = 1 if DEBUG else 4
 bot = Bot(token=BOT_TOKEN)
@@ -36,6 +39,8 @@ def run_pooling(dispatcher: Dispatcher):
     bot_link = f"https://t.me/{bot_info['username']}"
     logger.info(dispatcher.bot.getWebhookInfo())
     logger.info(f"Pooling of '{bot_link}' started")
+
+    openai.api_key = OPENAI_API_KEY
 
 
 @csrf_exempt
