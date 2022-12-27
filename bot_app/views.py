@@ -57,6 +57,7 @@ class TelegramBotWebhookView(View):
 
 
 def process_telegram_event(update_json):
+    logger.info(update_json)
     update = Update.de_json(update_json, _updater_.bot)
     _updater_.dispatcher.process_update(update)
 
