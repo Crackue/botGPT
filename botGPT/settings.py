@@ -29,7 +29,7 @@ DEBUG = env('DEBUG')
 
 WEB_HOOK = env('WEB_HOOK_URL')
 WEB_HOOK_URL = WEB_HOOK.replace('https://', '', 1)
-ALLOWED_HOSTS = ['localhost', WEB_HOOK_URL, '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', WEB_HOOK_URL, '127.0.0.1', '.herokuapp.com']
 
 
 # Application definition
