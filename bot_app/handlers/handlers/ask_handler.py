@@ -40,7 +40,7 @@ def cancel(update: Update, context: CallbackContext):
 ask_conv_handler = ConversationHandler(
     entry_points=[CommandHandler('ask', ask)],
     states={
-        QUESTION: [MessageHandler(Filters.reply, get_question), MessageHandler(Filters.text, repeat_or_stop)],
+        QUESTION: [MessageHandler(Filters.reply, get_question)],
     },
     fallbacks=[CommandHandler('cancel', cancel)],
 )

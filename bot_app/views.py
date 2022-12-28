@@ -15,7 +15,6 @@ from botGPT.settings import DEBUG, BOT_TOKEN, WEB_HOOK_URL, TELEGRAM_URL
 logger = logging.getLogger(__name__)
 
 n_workers = 1 if DEBUG else 4
-bot = Bot(token=BOT_TOKEN)
 _updater_ = Updater(token=BOT_TOKEN, workers=n_workers)
 
 
@@ -25,7 +24,8 @@ def setup_dispatcher(dp):
     return dp
 
 
-def run_pooling(dispatcher: Dispatcher):
+def run_pooling():
+    dispatcher = _updater_.dispatcher
     setup_dispatcher(dispatcher)
     dispatcher.bot.delete_webhook()
     dispatcher.bot.set_webhook(f"{TELEGRAM_URL}{BOT_TOKEN}/setWebhook?url={WEB_HOOK_URL}/bot/webhook_post/")
@@ -40,11 +40,16 @@ def run_pooling(dispatcher: Dispatcher):
 @csrf_exempt
 def start_bot(request) -> HttpResponse:
     logger.info("START_BOT_REQUEST")
-    run_pooling(_updater_.dispatcher)
+    run_pooling()
     return HttpResponse("START_BOT_RESPONSE")
 
 
 class TelegramBotWebhookView(View):
+    _updater_: Updater
+
+    def __init__(self):
+        self._updater_ = Updater(token=BOT_TOKEN, workers=n_workers)
+
     @staticmethod
     def post(request, *args, **kwargs):
         process_telegram_event(json.loads(request.body))
@@ -61,5 +66,4 @@ def process_telegram_event(update_json):
     _updater_.dispatcher.process_update(update)
 
 
-if bool(DEBUG):
-    run_pooling(_updater_.dispatcher)
+run_pooling()
