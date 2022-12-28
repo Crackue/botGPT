@@ -2,7 +2,7 @@ import openai
 import logging
 from telegram import Update
 from telegram.ext import (CallbackContext, ConversationHandler, CommandHandler, MessageHandler, Filters)
-
+from botGPT.settings import MAX_TOKENS, MODEL
 
 logger = logging.getLogger(__name__)
 QUESTION = range(1)
@@ -16,7 +16,7 @@ def ask(update: Update, context: CallbackContext):
 def get_question(update: Update, context: CallbackContext):
     username = update.message.from_user['username']
     prompt = update.message.text
-    response = openai.Completion.create(model="text-davinci-003", prompt=prompt, temperature=0, max_tokens=7)
+    response = openai.Completion.create(model=MODEL, prompt=prompt, temperature=0, max_tokens=MAX_TOKENS)
     logger.info(f"response {response}")
     for choice in response.choices:
         update.message.reply_text(f"response for {username}:\nchoice {choice.index}: {choice.text}")
