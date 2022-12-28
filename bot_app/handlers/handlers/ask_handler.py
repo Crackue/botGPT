@@ -16,7 +16,7 @@ def ask(update: Update, context: CallbackContext):
 def get_question(update: Update, context: CallbackContext):
     username = update.message.from_user['username']
     prompt = update.message.text
-    response = openai.Completion.create(model=MODEL, prompt=prompt, temperature=0, max_tokens=MAX_TOKENS)
+    response = openai.Completion.create(model=MODEL, prompt=prompt, temperature=0, max_tokens=int(MAX_TOKENS))
     logger.info(f"response {response}")
     for choice in response.choices:
         update.message.reply_text(f"response for {username}:\nchoice {choice.index}: {choice.text}")
