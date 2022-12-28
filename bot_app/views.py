@@ -45,10 +45,6 @@ def start_bot(request) -> HttpResponse:
 
 
 class TelegramBotWebhookView(View):
-    _updater_: Updater
-
-    def __init__(self):
-        self._updater_ = Updater(token=BOT_TOKEN, workers=n_workers)
 
     @staticmethod
     def post(request, *args, **kwargs):
