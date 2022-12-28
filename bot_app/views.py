@@ -10,13 +10,9 @@ from bot_app.handlers.handlers import ask_handler as ask_handler
 from botGPT.settings import env
 from telegram import Bot, Update
 from telegram.ext import (Updater, CommandHandler, Dispatcher)
-from botGPT.settings import DEBUG, BOT_TOKEN, WEB_HOOK_URL
+from botGPT.settings import DEBUG, BOT_TOKEN, WEB_HOOK_URL, TELEGRAM_URL
 
 logger = logging.getLogger(__name__)
-DEBUG = env('DEBUG')
-BOT_TOKEN = env('BOT_TOKEN')
-TELEGRAM_URL = env('TELEGRAM_URL')
-WEB_HOOK_URL = env('WEB_HOOK_URL')
 
 n_workers = 1 if DEBUG else 4
 bot = Bot(token=BOT_TOKEN)
