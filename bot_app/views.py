@@ -1,5 +1,4 @@
 import json
-import os
 import logging
 
 import openai
@@ -18,7 +17,6 @@ DEBUG = env('DEBUG')
 BOT_TOKEN = env('BOT_TOKEN')
 TELEGRAM_URL = env('TELEGRAM_URL')
 WEB_HOOK_URL = env('WEB_HOOK_URL')
-OPENAI_API_KEY = env('OPENAI_API_KEY')
 
 n_workers = 1 if DEBUG else 4
 bot = Bot(token=BOT_TOKEN)
@@ -27,7 +25,7 @@ _updater_ = Updater(token=BOT_TOKEN, workers=n_workers)
 
 def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("start", on_start_menu_handler.command_start))
-    dp.add_handler(CommandHandler("ask", ask_handler.ask))
+    dp.add_handler(ask_handler.ask_conv_handler)
     return dp
 
 
@@ -40,7 +38,7 @@ def run_pooling(dispatcher: Dispatcher):
     logger.info(dispatcher.bot.getWebhookInfo())
     logger.info(f"Pooling of '{bot_link}' started")
 
-    openai.api_key = OPENAI_API_KEY
+    openai.api_key = env('OPENAIAPIKEY')
 
 
 @csrf_exempt
