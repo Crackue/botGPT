@@ -2,7 +2,7 @@ Django==4.0.1
 django-environ==0.8.1
 environ==1.0
 dnspython==2.1.0
-python-telegram-bot>=13.12,<14
+python-telegram-bot>=13.15,<14
 requests~=2.26.0
 gunicorn==20.1.0
 openai
